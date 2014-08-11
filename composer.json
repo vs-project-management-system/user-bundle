@@ -1,0 +1,29 @@
+{
+    "name": "vs-project-management-system/project-bundle",
+    "type": "symfony-bundle",
+    "description": "PMS project bundle. It contains the project for the pms system",
+    "keywords": [
+        "project"
+    ],
+    "homepage": "http://daviddurost.net/projects/pms",
+    "license": "MIT",
+    "authors": [
+        {
+        "name": "David Durost",
+        "homepage": "http://daviddurost.net"
+        }
+    ],
+    "require": {
+        "php": ">=5.5"
+    },
+    "require-dev": {
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "autoload": {
+        "psr-4": {
+            "PMS\\Bundle\\ProjectBundle\\": ""
+        }
+    }
+}
