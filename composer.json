@@ -1,9 +1,9 @@
 {
-    "name": "vs-project-management-system/project-bundle",
+    "name": "vs-project-management-system/user-bundle",
     "type": "symfony-bundle",
-    "description": "PMS project bundle. It contains the project for the pms system",
+    "description": "PMS user bundle. It contains the project for the pms system",
     "keywords": [
-        "project"
+        "user"
     ],
     "homepage": "http://daviddurost.net/projects/pms",
     "license": "MIT",
@@ -14,7 +14,8 @@
         }
     ],
     "require": {
-        "php": ">=5.5"
+        "php": ">=5.5",
+        "pugx/multi-user-bundle": "3.0.*@dev"
     },
     "require-dev": {
     },
@@ -23,7 +24,7 @@
     },
     "autoload": {
         "psr-4": {
-            "PMS\\Bundle\\ProjectBundle\\": ""
+            "PMS\\Bundle\\UserBundle\\": ""
         }
     }
 }

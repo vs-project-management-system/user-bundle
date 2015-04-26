@@ -1,0 +1,10 @@
+PMS\Bundle\UserBundle\Entity\Group:
+    type: entity
+    table: pms_group
+    id:
+        type: id
+        generator: { strategy: AUTO }
+    fields:
+        name:
+            type: string
+            length: 180

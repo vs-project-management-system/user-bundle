@@ -1,0 +1,10 @@
+PMS\Bundle\UserBundle\Entity\Team:
+    type: entity
+    table: team
+    id:
+        type: id
+        generator: { strategy: AUTO }
+    fields:
+        name:
+            type: string
+            length: 180

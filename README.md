@@ -7,13 +7,11 @@ User bundle for the PMS System sandbox.
 - Client
 - Developer
 - User
+- Organizaiton
+- Team
 
 ###Forms
-- AdminFormType
-- ClientFormType
-- DeveloperFormType
 - RegistrationFormType
-- UserFormType
 
 ####Form Model
 - Registration
@@ -26,12 +24,6 @@ pms_admin_index | /admins
 pms_admin_new | /admins/new
 pms_admin_remove | /admins/{slug}/remove
 pms_admin_show | /admins/{slug}
-
-###Repositories
-- AdminRepository
-- ClientRepository
-- DeveloperRepository
-- UserRepository
 
 ###Resources
 Action | Template

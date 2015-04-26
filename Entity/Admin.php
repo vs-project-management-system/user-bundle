@@ -1,17 +1,48 @@
 <?php
 namespace PMS\Bundle\UserBundle\Entity;
 
-use \Doctrine\ORM\Mapping as ORM;
-use \Gedmo\Mapping\Annotation as Gedmo;
-use \Symfony\Component\Validator\Constraints as Assert;
-use \PUGX\MultiUserBundle\Validator\Constraints\UniqueEntity;
-
-/**
- * @ORM\Entity(repositoryClass="\PMS\Bundle\UserBundle\Repository\AdminRepository")
- * @ORM\Table(name="admin")
- * @UniqueEntity(fields = "username", targetClass = "PMS\Bundle\UserBundle\Entity\User", message="fos_user.username.already_used")
- * @UniqueEntity(fields = "email", targetClass = "PMS\Bundle\UserBundle\Entity\User", message="fos_user.email.already_used")
- */
 class Admin extends \PMS\Bundle\UserBundle\Entity\User
 {
+    /**
+     * Primary
+     * @var boolean
+     */
+    protected $primary;
+    
+    /**
+     * Is primary
+     * @param boolean|null $primary
+     * @return \PMS\Bundle\UserBundle\Entity\Admin|boolean
+     */
+    public function isPrimary($primary = null)
+    {
+         if (null != $primary) {
+            $this->primary = (boolean) $primary;
+            
+            return $this;
+        }
+        
+        return $this->primary;
+    }
+    
+    /**
+     * Get primary
+     * @return boolean
+     */
+    public function getPrimary()
+    {
+        return $this->primary;
+    }
+    
+    /**
+     * Set primary
+     * @param boolean $primary
+     * @return \PMS\Bundle\UserBundle\Entity\Admin
+     */
+    public function setPrimary(boolean $primary)
+    {
+        $this->primary = $primary;
+        
+        return $this;
+    }
 }

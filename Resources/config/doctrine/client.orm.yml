@@ -1,0 +1,71 @@
+PMS\Bundle\UserBundle\Entity\Client:
+    type: entity
+    table: client
+    id:
+        type: id
+        generator: { strategy: AUTO }
+    fields:
+        firstname:
+            type: string
+            length: 180
+        lastname:
+            type: string
+            length: 180
+        bio:
+            type: string
+            nullable: true
+        facebookId:
+            type: string
+            nullable: true
+        googleId:
+            type: string
+            nullable: true
+        linkedinId:
+            type: string
+            nullable: true
+        twitterId:
+            type: string
+            nullable: true
+        foursquareId:
+            type: string
+            nullable: true
+        url:
+            type: string
+            nullable: true
+        avatar:
+            type: string
+            nullable: true
+        slug:
+            type: string
+            gedmo:
+                slug:
+                    fields: [firstname, lastname]
+        createdAt:
+            type: date
+            gedmo:
+                timestampable:
+                    on: create
+        updatedAt:
+            type: date
+            gedmo:
+                timestampable:
+                    on: update
+        createdBy:
+            type: string
+            gedmo:
+                blameable:
+                    on: create
+        updatedBy:
+            type: string
+            gedmo:
+                blameable:
+                    on: update
+    manyToOne:
+        Organization:
+            targetEntity: \PMS\Bundle\UserBundle\Entity\Organization
+            inversedBy: clients
+            joinColumn: organization_id
+            referencedColumnName: id
+    Projects:
+            targetEntity: \PMS\Bundle\ProjectBundle\Entity\Project
+            mappedBy: client

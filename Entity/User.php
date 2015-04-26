@@ -1,48 +1,16 @@
 <?php
 namespace PMS\Bundle\UserBundle\Entity;
 
-use \Doctrine\ORM\Mapping as ORM;
-use \Gedmo\Mapping\Annotation as Gedmo;
-use \Symfony\Component\Validator\Constraints as Assert;
-use \PUGX\MultiUserBundle\Validator\Constraints\UniqueEntity;
-
 use \PMS\Bundle\CoreBundle\Traits\TimestampableTrait;
+use \PMS\Bundle\UserBundle\Traits\SluggableTrait;
 
-/**
- * @ORM\Entity(repositoryClass="\PMS\Bundle\UserBundle\Repository\UserRepository")
- * @ORM\Table(name="fos_user")
- * @ORM\InheritanceType("JOINED")
- * @ORM\DiscriminatorColumn(name="type", type="string")
- * @ORM\DiscriminatorMap(
- *     {
- *         "admin" = "Admin",
- *         "user" = "User",
- *         "client" = "Client",
- *         "developer" = "Developer"
- *     }
- * )
- * @UniqueEntity(
- *     fields = "username",
- *     targetClass = "PMS\Bundle\UserBundle\Entity\User",
- *     message="fos_user.username.already_used"
- *)
- * @UniqueEntity(
- *     fields = "email",
- *     targetClass = "PMS\Bundle\UserBundle\Entity\User",
- *     message="fos_user.email.already_used"
- *)
- *
- */
 class User extends \FOS\UserBundle\Model\User
 {
     use TimestampableTrait;
-
+    use SluggableTraits;
+    
     /**
      * @var integer $id
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
 
@@ -57,129 +25,75 @@ class User extends \FOS\UserBundle\Model\User
     }
 
     /**
-     * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Please enter your first name.", groups={"Registration", "Profile"})
-     * @Assert\Length(
-     *     min="3",
-     *     minMessage="The name is too short.",
-     *     groups={"Registration", "Profile"},
-     *     max="255",
-     *     maxMessage="The name is too long."
-     *)
+     * First name
+     * @var string
      */
     protected $firstName;
 
     /**
-     * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Please enter your last name.", groups={"Registration", "Profile"})
-     * @Assert\Length(
-     *     min="3",
-     *     minMessage="The name is too short.",
-     *     groups={"Registration", "Profile"},
-     *     max="255",
-     *     maxMessage="The name is too long."
-     *)
+     * Last name
+     * @var string 
      */
     protected $lastName;
 
     /**
-     * @ORM\Column(type="string")
-     * @Assert\Length(
-     *      min = "1",
-     *      max = "1",
-     *      minMessage = "Must be at least {{ limit }} characters length",
-     *      maxMessage = "Cannot be longer than {{ limit }} characters length"
-     * )
-     * @Assert\NotBlank()
-     * @Assert\Choice(choices = {"M", "F"})
+     * Gender
+     * @var string
      */
     protected $gender;
 
     /**
-     * @ORM\Column(type="date")
-     * @Assert\NotBlank()
+     * Birthdate
+     * @var \DateTime 
      */
     protected $birthdate;
 
     /**
+     * Facebook id
      * @var string
-     *
-     * @ORM\Column(name="facebookId", type="string", length=255, nullable=true)
      */
     protected $facebookId;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="googleId", type="string", length=255, nullable=true)
+     * Google id
+     * @var string 
      */
     protected $googleId;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="linkedinId", type="string", length=255, nullable=true)
+     * Linked in
+     * @var string 
      */
     protected $linkedinId;
 
     /**
+     * Twitter id
      * @var string
-     *
-     * @ORM\Column(name="twitterId", type="string", length=255, nullable=true)
      */
     protected $twitterId;
 
     /**
+     * Foursquare id
      * @var string
-     *
-     * @ORM\Column(name="foursquareId", type="string", length=255, nullable=true)
      */
     protected $foursquareId;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="avatar", type="string", length=255)
+     * Avatar
+     * @var sytring
      */
-    protected $avatar = '/bundles/PMSuser/img/avatars/default.png';
+    protected $avatar;
 
     /**
-    * @Gedmo\Slug(fields={"lastName", "firstName"})
-    * @ORM\Column(length=128, unique=true)
-    */
-    protected $slug;
-
-    /**
-     * Get slug
+     * Construct
      */
-    public function getSlug()
+    public function __construct()
     {
-        return $this->slug;
+        $this->avatar = '/bundles/PMSuser/img/avatars/default.png';
     }
 
     /**
-     * Set slug
-     */
-    public function setSlug($slug = null)
-    {
-        if (null == $slug) {
-            $this->slug = str_replace(
-                ' ',
-                '-',
-                $this->getName()
-            );
-        }
-
-        return $this;
-    }
-
-    public function getName()
-    {
-        return $this->firstName.' '.$this->lastName;
-    }
-
-    /**
-     * Get the full name of the user (first + last name)
+     * Get full name
      * @return string
      */
     public function getFullName()
@@ -188,8 +102,8 @@ class User extends \FOS\UserBundle\Model\User
     }
 
     /**
-     * @param  string $facebookId
-     * @return void
+     * Set facebook id
+     * @param string $facebookId
      */
     public function setFacebookId($facebookId)
     {
@@ -199,6 +113,7 @@ class User extends \FOS\UserBundle\Model\User
     }
 
     /**
+     * Get facebook id
      * @return string
      */
     public function getFacebookId()
@@ -207,7 +122,8 @@ class User extends \FOS\UserBundle\Model\User
     }
 
     /**
-     * @param Array
+     * Set FB data
+     * @param array $fbdata
      */
     public function setFBData($fbdata)
     {
@@ -227,8 +143,9 @@ class User extends \FOS\UserBundle\Model\User
     }
 
     /**
-     * @param  string $firstname
-     * @return User
+     * Set firstname
+     * @param string $firstname
+     * @return \PMS\Bundle\UserBundle\Entity\User
      */
     public function setFirstName($firstname)
     {
@@ -238,8 +155,7 @@ class User extends \FOS\UserBundle\Model\User
     }
 
     /**
-     * Get first_name
-     *
+     * Get firstname
      * @return string
      */
     public function getFirstName()
@@ -248,10 +164,9 @@ class User extends \FOS\UserBundle\Model\User
     }
 
     /**
-     * Set last_name
-     *
-     * @param  string $lastname
-     * @return User
+     * Set lastname
+     * @param string $lastname
+     * @return \PMS\Bundle\UserBundle\Entity\User
      */
     public function setLastName($lastname)
     {
@@ -261,8 +176,7 @@ class User extends \FOS\UserBundle\Model\User
     }
 
     /**
-     * Get last_name
-     *
+     * Get lastname
      * @return string
      */
     public function getLastName()
@@ -271,10 +185,9 @@ class User extends \FOS\UserBundle\Model\User
     }
 
     /**
-     * Set googleId
-     *
-     * @param  string $googleId
-     * @return User
+     * Set google id
+     * @param string $googleId
+     * @return \PMS\Bundle\UserBundle\Entity\User
      */
     public function setGoogleId($googleId)
     {
@@ -284,8 +197,7 @@ class User extends \FOS\UserBundle\Model\User
     }
 
     /**
-     * Get googleId
-     *
+     * Get google id
      * @return string
      */
     public function getGoogleId()
@@ -294,10 +206,9 @@ class User extends \FOS\UserBundle\Model\User
     }
 
     /**
-     * Set linkedinId
-     *
-     * @param  string $linkedinId
-     * @return User
+     * Set linkedin
+     * @param string $linkedinId
+     * @return \PMS\Bundle\UserBundle\Entity\User
      */
     public function setLinkedinId($linkedinId)
     {
@@ -307,8 +218,7 @@ class User extends \FOS\UserBundle\Model\User
     }
 
     /**
-     * Get linkedinId
-     *
+     * Get linkedin
      * @return string
      */
     public function getLinkedinId()
@@ -317,10 +227,9 @@ class User extends \FOS\UserBundle\Model\User
     }
 
     /**
-     * Set twitterId
-     *
-     * @param  string $twitterId
-     * @return User
+     * Set twitter id
+     * @param string $twitterId
+     * @return \PMS\Bundle\UserBundle\Entity\User
      */
     public function setTwitterId($twitterId)
     {
@@ -330,8 +239,7 @@ class User extends \FOS\UserBundle\Model\User
     }
 
     /**
-     * Get twitterId
-     *
+     * Get twitter id
      * @return string
      */
     public function getTwitterId()
@@ -340,10 +248,9 @@ class User extends \FOS\UserBundle\Model\User
     }
 
     /**
-     * Set foursquareId
-     *
-     * @param  string $foursquareId
-     * @return User
+     * Set foursquare id
+     * @param string $foursquareId
+     * @return \PMS\Bundle\UserBundle\Entity\User
      */
     public function setFoursquareId($foursquareId)
     {
@@ -353,8 +260,7 @@ class User extends \FOS\UserBundle\Model\User
     }
 
     /**
-     * Get foursquareId
-     *
+     * Get foursquare id
      * @return string
      */
     public function getFoursquareId()
@@ -364,9 +270,8 @@ class User extends \FOS\UserBundle\Model\User
 
     /**
      * Set avatar
-     *
-     * @param  string $avatar
-     * @return User
+     * @param string $avatar
+     * @return \PMS\Bundle\UserBundle\Entity\User
      */
     public function setAvatar($avatar)
     {
@@ -377,7 +282,6 @@ class User extends \FOS\UserBundle\Model\User
 
     /**
      * Get avatar
-     *
      * @return string
      */
     public function getAvatar()
@@ -392,21 +296,21 @@ class User extends \FOS\UserBundle\Model\User
    
     /**
      * Set gender
-     *
      * @param string $gender
-     * @return User
+     * @return \PMS\Bundle\UserBundle\Entity\User
      */
     public function setGender($gender)
     {
-        $this->gender = $gender;
+        if (in_array(strtolower($gender), ['m', 'f'])) {
+            $this->gender = $gender;
+        }        
     
         return $this;
     }
 
     /**
      * Get gender
-     *
-     * @return string 
+     * @return string
      */
     public function getGender()
     {
@@ -415,11 +319,10 @@ class User extends \FOS\UserBundle\Model\User
 
     /**
      * Set birthdate
-     *
      * @param \DateTime $birthdate
-     * @return User
+     * @return \PMS\Bundle\UserBundle\Entity\User
      */
-    public function setBirthdate($birthdate)
+    public function setBirthdate(\DateTime $birthdate)
     {
         $this->birthdate = $birthdate;
     
@@ -428,8 +331,7 @@ class User extends \FOS\UserBundle\Model\User
 
     /**
      * Get birthdate
-     *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getBirthdate()
     {
